@@ -1,0 +1,28 @@
+--- server/rag.ts
++++ server/rag.ts
+@@ -87,7 +87,7 @@
+ 
+ router.post('/api/chat', async (req, res) => {
+   try {
+-    const { message, language } = req.body;
++    const { message, language, history } = req.body;
+     
+     // 1. Retrieve
+     const results = await searchSimilar(message, 3);
+@@ -128,9 +128,15 @@
+ Context:
+ ${context}`;
+ 
++    const contents = (history || []).map((h: any) => ({
++      role: h.role === 'assistant' ? 'model' : 'user',
++      parts: [{ text: h.content }]
++    }));
++    contents.push({ role: 'user', parts: [{ text: message }] });
++
+     const response = await ai.models.generateContent({
+       model: 'gemini-2.5-flash',
+       config: { systemInstruction: systemInstructionText },
+-      contents: [{ role: 'user', parts: [{ text: message }] }],
++      contents: contents,
+     });
+     

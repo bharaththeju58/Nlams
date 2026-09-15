@@ -1,0 +1,1897 @@
+import {
+  Project,
+  LandParcel,
+  Award,
+  CompensationPayment,
+  PossessionRecord,
+  AffectedFamily,
+  Grievance,
+  AuditLog,
+  RuleAlert,
+  LandRecordExternalAPI
+} from '../types';
+
+export const INITIAL_PROJECTS: Project[] = [
+  {
+    id: 'PRJ-2025-0101',
+    name: 'National Highway Expansion (NH-44 6-Laning)',
+    sector: 'Highways',
+    requiringBody: 'National Highways Authority of India (NHAI)',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    estimatedLandAcres: 3450,
+    acquiredLandAcres: 2890,
+    numberOfVillages: 28,
+    projectCostCrores: 4850,
+    compensationBudgetCrores: 820,
+    compensationDisbursedCrores: 695,
+    startDate: '2024-03-15',
+    expectedCompletionDate: '2027-06-30',
+    status: 'Possession Handover',
+    scrutinyStatus: 'Approved',
+    scrutinyNotes: 'Alignment verified with State Revenue Dept. No sensitive eco-zone intersection.',
+    alignmentMapUrl: 'https://nlams.gov.in/gis/docs/nh44-alignment-v2.pdf',
+    preliminaryNotificationNumber: 'SEC11/TN/KRI/2024/048',
+    preliminaryNotificationDate: '2024-06-10',
+    finalDeclarationNumber: 'SEC19/TN/KRI/2024/092',
+    finalDeclarationDate: '2024-11-20',
+    rrCompletionPercent: 88,
+    delayed: false,
+    createdAt: '2024-02-10',
+    centerCoordinates: [12.6850, 77.9250],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [12.7409, 77.8253],
+        [12.7235, 77.8540],
+        [12.7150, 77.8700],
+        [12.6780, 77.9350],
+        [12.6350, 78.0200],
+        [12.5186, 78.2137]
+      ]
+    },
+    affectedDistricts: ['Krishnagiri', 'Salem'],
+    affectedVillages: ['Zuzuvadi', 'Kamandoddi', 'Shoolagiri', 'Perandapalli', 'Omalur']
+  },
+  {
+    id: 'PRJ-2025-0102',
+    name: 'Eastern Dedicated Freight Rail Corridor — Phase III',
+    sector: 'Railways',
+    requiringBody: 'Dedicated Freight Corridor Corp. of India (DFCCIL)',
+    state: 'Uttar Pradesh',
+    district: 'Chandauli',
+    estimatedLandAcres: 4200,
+    acquiredLandAcres: 2450,
+    numberOfVillages: 42,
+    projectCostCrores: 6200,
+    compensationBudgetCrores: 1250,
+    compensationDisbursedCrores: 840,
+    startDate: '2024-05-01',
+    expectedCompletionDate: '2028-03-31',
+    status: 'Compensation Disbursement',
+    scrutinyStatus: 'Approved',
+    scrutinyNotes: 'Rail alignment vetted by Ministry of Railways and State Board of Revenue.',
+    alignmentMapUrl: 'https://nlams.gov.in/gis/docs/edfc-p3-chandauli.pdf',
+    preliminaryNotificationNumber: 'SEC11/UP/CHA/2024/112',
+    preliminaryNotificationDate: '2024-07-15',
+    finalDeclarationNumber: 'SEC19/UP/CHA/2025/014',
+    finalDeclarationDate: '2025-01-20',
+    rrCompletionPercent: 62,
+    delayed: true,
+    delayReason: 'Pending Section 30 award arbitration on 14 disputed parcels in Mughal Sarai tehsil.',
+    createdAt: '2024-04-12',
+    centerCoordinates: [25.2750, 83.1400],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [25.3200, 83.0200],
+        [25.2820, 83.1150],
+        [25.2760, 83.1380],
+        [25.2650, 83.1650],
+        [25.2400, 83.2200],
+        [25.1800, 83.3500]
+      ]
+    },
+    affectedDistricts: ['Chandauli', 'Varanasi'],
+    affectedVillages: ['Alinagar', 'Mughal Sarai', 'Dhannapur', 'Kharagpur']
+  },
+  {
+    id: 'PRJ-2025-0103',
+    name: 'Upper Krishna Irrigation Modernization Project',
+    sector: 'Irrigation',
+    requiringBody: 'Krishna Bhagya Jala Nigam Ltd. (KBJNL)',
+    state: 'Karnataka',
+    district: 'Bagalkote',
+    estimatedLandAcres: 5800,
+    acquiredLandAcres: 4120,
+    numberOfVillages: 35,
+    projectCostCrores: 3400,
+    compensationBudgetCrores: 640,
+    compensationDisbursedCrores: 510,
+    startDate: '2023-11-01',
+    expectedCompletionDate: '2026-12-31',
+    status: 'R&R Implementation',
+    scrutinyStatus: 'Approved',
+    scrutinyNotes: 'Canal contour verified with State Minor Irrigation & Bhoomi records.',
+    alignmentMapUrl: 'https://nlams.gov.in/gis/docs/ukp-canal-stage3.pdf',
+    preliminaryNotificationNumber: 'SEC11/KA/BAG/2023/305',
+    preliminaryNotificationDate: '2023-12-05',
+    finalDeclarationNumber: 'SEC19/KA/BAG/2024/078',
+    finalDeclarationDate: '2024-05-18',
+    rrCompletionPercent: 74,
+    delayed: false,
+    createdAt: '2023-10-01',
+    centerCoordinates: [16.5100, 75.3200],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [16.5600, 75.2200],
+        [16.5350, 75.2700],
+        [16.5120, 75.3180],
+        [16.5050, 75.3350],
+        [16.4800, 75.3800],
+        [16.4500, 75.4500]
+      ]
+    },
+    affectedDistricts: ['Bagalkote', 'Vijayapura'],
+    affectedVillages: ['Terdal', 'Jamkhandi', 'Rabkavi', 'Banhatti']
+  },
+  {
+    id: 'PRJ-2025-0104',
+    name: 'Bhadla Ultra Mega Solar Energy Park Corridor',
+    sector: 'Renewable Energy',
+    requiringBody: 'Solar Energy Corporation of India (SECI)',
+    state: 'Rajasthan',
+    district: 'Jodhpur',
+    estimatedLandAcres: 7500,
+    acquiredLandAcres: 6900,
+    numberOfVillages: 14,
+    projectCostCrores: 5100,
+    compensationBudgetCrores: 410,
+    compensationDisbursedCrores: 395,
+    startDate: '2024-01-10',
+    expectedCompletionDate: '2026-06-30',
+    status: 'R&R Implementation',
+    scrutinyStatus: 'Approved',
+    scrutinyNotes: 'Barren and non-agricultural revenue parcels identified via Bhunaksha/Apna Khata.',
+    alignmentMapUrl: 'https://nlams.gov.in/gis/docs/bhadla-solar-expansion.pdf',
+    preliminaryNotificationNumber: 'SEC11/RJ/JOD/2024/019',
+    preliminaryNotificationDate: '2024-02-14',
+    finalDeclarationNumber: 'SEC19/RJ/JOD/2024/061',
+    finalDeclarationDate: '2024-06-25',
+    rrCompletionPercent: 92,
+    delayed: false,
+    createdAt: '2023-12-15',
+    centerCoordinates: [27.5380, 71.9250],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [27.4800, 71.8500],
+        [27.5100, 71.8900],
+        [27.5380, 71.9250],
+        [27.5650, 71.9800],
+        [27.6000, 72.0500]
+      ]
+    },
+    affectedDistricts: ['Jodhpur', 'Phalodi', 'Bikaner'],
+    affectedVillages: ['Bhadla Khurd', 'Bhadla Kalan', 'Bap', 'Barsinghsar']
+  },
+  {
+    id: 'PRJ-2025-0105',
+    name: 'Pune Outer Metropolitan Ring Road (Western Package)',
+    sector: 'Urban Infrastructure',
+    requiringBody: 'Maharashtra State Road Development Corporation (MSRDC)',
+    state: 'Maharashtra',
+    district: 'Pune',
+    estimatedLandAcres: 2900,
+    acquiredLandAcres: 850,
+    numberOfVillages: 32,
+    projectCostCrores: 9500,
+    compensationBudgetCrores: 2400,
+    compensationDisbursedCrores: 720,
+    startDate: '2025-01-15',
+    expectedCompletionDate: '2029-03-31',
+    status: 'Preliminary Notification Published',
+    scrutinyStatus: 'Approved',
+    scrutinyNotes: 'High-value peri-urban parcels; requires careful valuation multiplier under Schedule I.',
+    alignmentMapUrl: 'https://nlams.gov.in/gis/docs/pune-ring-road-w.pdf',
+    preliminaryNotificationNumber: 'SEC11/MH/PUN/2025/007',
+    preliminaryNotificationDate: '2025-08-15',
+    rrCompletionPercent: 35,
+    delayed: true,
+    delayReason: 'Revenue survey and parcel demarcation verification in progress.',
+    createdAt: '2024-11-20',
+    centerCoordinates: [18.4420, 73.7680],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [18.5200, 73.7100],
+        [18.4750, 73.7400],
+        [18.4420, 73.7680],
+        [18.4360, 73.7790],
+        [18.3900, 73.8100],
+        [18.3500, 73.8600]
+      ]
+    },
+    affectedDistricts: ['Pune'],
+    affectedVillages: ['Khadakwasla', 'Haveli', 'Nanded', 'Kothrud']
+  },
+  {
+    id: 'PRJ-2025-0106',
+    name: 'Dholera Special Investment Region Expressway Spur',
+    sector: 'Urban Infrastructure',
+    requiringBody: 'Dholera Industrial City Development Ltd (DICDL)',
+    state: 'Gujarat',
+    district: 'Ahmedabad',
+    estimatedLandAcres: 1850,
+    acquiredLandAcres: 320,
+    numberOfVillages: 16,
+    projectCostCrores: 2100,
+    compensationBudgetCrores: 480,
+    compensationDisbursedCrores: 95,
+    startDate: '2025-03-01',
+    expectedCompletionDate: '2028-09-30',
+    status: 'Under Scrutiny',
+    scrutinyStatus: 'Pending',
+    scrutinyNotes: 'Awaiting alignment map digital stamp from Dholera SIR Town Planning officer.',
+    rrCompletionPercent: 15,
+    delayed: false,
+    createdAt: '2025-02-01',
+    centerCoordinates: [22.2550, 72.1950],
+    zoomLevel: 12,
+    alignmentGeometry: {
+      type: 'LineString',
+      coordinates: [
+        [22.3800, 72.1200],
+        [22.3200, 72.1550],
+        [22.2580, 72.1920],
+        [22.2480, 72.2050],
+        [22.2000, 72.2300]
+      ]
+    },
+    affectedDistricts: ['Ahmedabad', 'Bhavnagar'],
+    affectedVillages: ['Dholera', 'Bavliari', 'Pipli', 'Fedra']
+  }
+];
+
+export const INITIAL_PARCELS: LandParcel[] = [
+  {
+    id: 'LP-001',
+    surveyNumber: 'SN-101/2A',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 2.50,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Ravi Kumar',
+    ownerReferenceMasked: 'Ravi K***r (***1001)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'PFMS Processing',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 2800000,
+    coordinates: { x: 100, y: 100, width: 85, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Not Required',
+    latitude: 11.7450,
+    longitude: 78.0420,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0395, 11.7430],
+          [78.0445, 11.7435],
+          [78.0440, 11.7470],
+          [78.0390, 11.7465],
+          [78.0395, 11.7430]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-002',
+    surveyNumber: 'SN-101/2B',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 1.50,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'M. Patel',
+    ownerReferenceMasked: 'M. P****l (***5678)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 3100000,
+    coordinates: { x: 110, y: 100, width: 80, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Resettled',
+    latitude: 11.7480,
+    longitude: 78.0460,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0445, 11.7465],
+          [78.0485, 11.7470],
+          [78.0480, 11.7495],
+          [78.0440, 11.7490],
+          [78.0445, 11.7465]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-003',
+    surveyNumber: 'SN-102/1',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 1.80,
+    landType: 'Non-Agricultural / Commercial',
+    ownerName: 'Ravi Kumar',
+    ownerReferenceMasked: 'Ravi K***r (***1001)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 4800000,
+    coordinates: { x: 120, y: 100, width: 90, height: 80 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Pending Verification',
+    verificationStatus: 'Pending',
+    rehabilitationStatus: 'Survey Pending',
+    latitude: 11.7510,
+    longitude: 78.0500,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0485, 11.7495],
+          [78.0525, 11.7500],
+          [78.0520, 11.7525],
+          [78.0480, 11.7520],
+          [78.0485, 11.7495]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-004',
+    surveyNumber: 'SN-102/2',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 1.00,
+    landType: 'Residential / Abadi',
+    ownerName: 'A. Kumar',
+    ownerReferenceMasked: 'A. K****r (***3456)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 4200000,
+    coordinates: { x: 130, y: 100, width: 75, height: 70 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Entitlement Approved',
+    latitude: 11.7540,
+    longitude: 78.0540,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0525, 11.7525],
+          [78.0565, 11.7530],
+          [78.0560, 11.7555],
+          [78.0520, 11.7550],
+          [78.0525, 11.7525]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-005',
+    surveyNumber: 'SN-103/1A',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 2.00,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Meena Devi',
+    ownerReferenceMasked: 'Meena D**i (***7890)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Award Declared',
+    possessionStatus: 'Notice Issued',
+    marketValuePerAcre: 2900000,
+    coordinates: { x: 140, y: 100, width: 85, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Not Required',
+    latitude: 11.7570,
+    longitude: 78.0580,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0565, 11.7555],
+          [78.0605, 11.7560],
+          [78.0600, 11.7585],
+          [78.0560, 11.7580],
+          [78.0565, 11.7555]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-006',
+    surveyNumber: 'SN-103/1B',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Salem',
+    tehsil: 'Omalur',
+    village: 'Omalur',
+    areaAcres: 1.20,
+    landType: 'Non-Agricultural / Commercial',
+    ownerName: 'L. Gupta',
+    ownerReferenceMasked: 'L. G****a (***2345)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 4600000,
+    coordinates: { x: 150, y: 100, width: 75, height: 70 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Pending Verification',
+    verificationStatus: 'Pending',
+    rehabilitationStatus: 'Not Required',
+    latitude: 11.7600,
+    longitude: 78.0620,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [78.0605, 11.7585],
+          [78.0645, 11.7590],
+          [78.0640, 11.7615],
+          [78.0600, 11.7610],
+          [78.0605, 11.7585]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-007',
+    surveyNumber: 'SN-104/1',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Hosur',
+    village: 'Zuzuvadi',
+    areaAcres: 2.00,
+    landType: 'Residential / Abadi',
+    ownerName: 'Ravi Kumar',
+    ownerReferenceMasked: 'Ravi K***r (***1001)',
+    ownershipType: 'Private Individual',
+    status: 'Notified',
+    compensationStatus: 'PFMS Processing',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 3600000,
+    coordinates: { x: 160, y: 100, width: 70, height: 65 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Survey Pending',
+    latitude: 12.7260,
+    longitude: 77.8590,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.8570, 12.7245],
+          [77.8610, 12.7250],
+          [77.8605, 12.7275],
+          [77.8565, 12.7270],
+          [77.8570, 12.7245]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-010',
+    surveyNumber: 'SN-105/3',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Hosur',
+    village: 'Zuzuvadi',
+    areaAcres: 1.50,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Arun Prakash',
+    ownerReferenceMasked: 'Arun P*****h (***1122)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 2700000,
+    coordinates: { x: 170, y: 100, width: 80, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Entitlement Approved',
+    latitude: 12.7290,
+    longitude: 77.8630,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.8610, 12.7275],
+          [77.8650, 12.7280],
+          [77.8645, 12.7305],
+          [77.8605, 12.7300],
+          [77.8610, 12.7275]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-015',
+    surveyNumber: 'SN-106/2',
+    projectId: 'PRJ-2025-0102',
+    state: 'Uttar Pradesh',
+    district: 'Chandauli',
+    tehsil: 'Mughal Sarai',
+    village: 'Alinagar',
+    areaAcres: 2.10,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'H. Das',
+    ownerReferenceMasked: 'H. D*s (***3344)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 2300000,
+    coordinates: { x: 180, y: 100, width: 85, height: 80 },
+    externalLandRecordSource: 'Bhulekh UP',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Resettled',
+    latitude: 25.2790,
+    longitude: 83.1340,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [83.1320, 25.2775],
+          [83.1360, 25.2780],
+          [83.1355, 25.2805],
+          [83.1315, 25.2800],
+          [83.1320, 25.2775]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-020',
+    surveyNumber: 'SN-107/4',
+    projectId: 'PRJ-2025-0103',
+    state: 'Karnataka',
+    district: 'Bagalkote',
+    tehsil: 'Jamkhandi',
+    village: 'Terdal',
+    areaAcres: 3.50,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'V. Iyer',
+    ownerReferenceMasked: 'V. I**r (***5566)',
+    ownershipType: 'Private Individual',
+    status: 'Notified',
+    compensationStatus: 'Disputed / In Escrow',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 5200000,
+    coordinates: { x: 190, y: 100, width: 95, height: 85 },
+    externalLandRecordSource: 'Bhoomi Karnataka',
+    mutationStatus: 'Pending Verification',
+    verificationStatus: 'Pending',
+    rehabilitationStatus: 'Survey Pending',
+    latitude: 16.5160,
+    longitude: 75.3240,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [75.3220, 16.5145],
+          [75.3260, 16.5150],
+          [75.3255, 16.5175],
+          [75.3215, 16.5170],
+          [75.3220, 16.5145]
+        ]
+      ]
+    }
+  },
+  {
+    id: 'LP-025',
+    surveyNumber: 'SN-108/1',
+    projectId: 'PRJ-2025-0104',
+    state: 'Rajasthan',
+    district: 'Jodhpur',
+    tehsil: 'Phalodi',
+    village: 'Bhadla Khurd',
+    areaAcres: 1.80,
+    landType: 'Residential / Abadi',
+    ownerName: 'C. Nair',
+    ownerReferenceMasked: 'C. N**r (***7788)',
+    ownershipType: 'Private Individual',
+    status: 'Notified',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 3900000,
+    coordinates: { x: 200, y: 100, width: 80, height: 75 },
+    externalLandRecordSource: 'Apna Khata Rajasthan',
+    mutationStatus: 'Verified',
+    verificationStatus: 'Verified',
+    rehabilitationStatus: 'Not Required',
+    latitude: 27.5420,
+    longitude: 71.9310,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [71.9290, 27.5405],
+          [71.9330, 27.5410],
+          [71.9325, 27.5435],
+          [71.9285, 27.5430],
+          [71.9290, 27.5405]
+        ]
+      ]
+    }
+  },
+
+  {
+    id: 'PAR-KRI-1001',
+    surveyNumber: '142/3A',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Hosur',
+    village: 'Zuzuvadi',
+    areaAcres: 4.85,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'M. S. Venkataraman & Brothers',
+    ownerReferenceMasked: 'M. S. V****raman (***4921)',
+    ownershipType: 'Joint / Coparcenary',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 2400000,
+    coordinates: { x: 120, y: 80, width: 95, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    latitude: 12.7235,
+    longitude: 77.8540,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.8520, 12.7220],
+          [77.8560, 12.7225],
+          [77.8555, 12.7250],
+          [77.8515, 12.7245],
+          [77.8520, 12.7220]
+        ]
+      ]
+    },
+    awardStatus: 'Paid',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Entitlement Approved'
+  },
+  {
+    id: 'PAR-KRI-1002',
+    surveyNumber: '144/1B',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Hosur',
+    village: 'Zuzuvadi',
+    areaAcres: 2.30,
+    landType: 'Non-Agricultural / Commercial',
+    ownerName: 'K. Rajasekaran',
+    ownerReferenceMasked: 'K. R***sekaran (***8814)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 3800000,
+    coordinates: { x: 230, y: 75, width: 85, height: 80 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    latitude: 12.7180,
+    longitude: 77.8680,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.8665, 12.7168],
+          [77.8700, 12.7172],
+          [77.8695, 12.7195],
+          [77.8660, 12.7190],
+          [77.8665, 12.7168]
+        ]
+      ]
+    },
+    awardStatus: 'Paid',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Not Required'
+  },
+  {
+    id: 'PAR-KRI-1003',
+    surveyNumber: '158/2',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Shoolagiri',
+    village: 'Kamandoddi',
+    areaAcres: 6.10,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'P. Muniswamy Gounder',
+    ownerReferenceMasked: 'P. M***swamy (***3019)',
+    ownershipType: 'Private Individual',
+    status: 'Notified',
+    compensationStatus: 'Award Declared',
+    possessionStatus: 'Notice Issued',
+    marketValuePerAcre: 2800000,
+    coordinates: { x: 330, y: 85, width: 110, height: 90 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    latitude: 12.6780,
+    longitude: 77.9350,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.9330, 12.6765],
+          [77.9375, 12.6770],
+          [77.9370, 12.6800],
+          [77.9325, 12.6795],
+          [77.9330, 12.6765]
+        ]
+      ]
+    },
+    awardStatus: 'Award Declared',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-KRI-1004',
+    surveyNumber: '162/4',
+    projectId: 'PRJ-2025-0101',
+    state: 'Tamil Nadu',
+    district: 'Krishnagiri',
+    tehsil: 'Shoolagiri',
+    village: 'Kamandoddi',
+    areaAcres: 3.40,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'R. Soundararajan',
+    ownerReferenceMasked: 'R. S***ndar (***2290)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 2600000,
+    coordinates: { x: 420, y: 90, width: 80, height: 75 },
+    externalLandRecordSource: 'Tamil Nilam (e-District TN)',
+    mutationStatus: 'Verified',
+    latitude: 12.6820,
+    longitude: 77.9420,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [77.9405, 12.6810],
+          [77.9440, 12.6815],
+          [77.9435, 12.6835],
+          [77.9400, 12.6830],
+          [77.9405, 12.6810]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-CHA-2001',
+    surveyNumber: '284/1',
+    projectId: 'PRJ-2025-0102',
+    state: 'Uttar Pradesh',
+    district: 'Chandauli',
+    tehsil: 'Mughal Sarai',
+    village: 'Alinagar',
+    areaAcres: 8.40,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Rameshwar Nath Tripathi',
+    ownerReferenceMasked: 'R. N. T***pathi (***5512)',
+    ownershipType: 'Private Individual',
+    status: 'Disputed',
+    compensationStatus: 'Disputed / In Escrow',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 3200000,
+    coordinates: { x: 140, y: 190, width: 120, height: 95 },
+    externalLandRecordSource: 'UP Bhulekh (Bhu-Aadhaar)',
+    mutationStatus: 'Disputed',
+    latitude: 25.2820,
+    longitude: 83.1150,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [83.1130, 25.2805],
+          [83.1180, 25.2810],
+          [83.1175, 25.2840],
+          [83.1125, 25.2835],
+          [83.1130, 25.2805]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-CHA-2002',
+    surveyNumber: '286/4',
+    projectId: 'PRJ-2025-0102',
+    state: 'Uttar Pradesh',
+    district: 'Chandauli',
+    tehsil: 'Mughal Sarai',
+    village: 'Alinagar',
+    areaAcres: 3.75,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Shanti Devi & Legal Heirs',
+    ownerReferenceMasked: 'S***ti D*** (***9102)',
+    ownershipType: 'Joint / Coparcenary',
+    status: 'Notified',
+    compensationStatus: 'PFMS Processing',
+    possessionStatus: 'Notice Issued',
+    marketValuePerAcre: 2600000,
+    coordinates: { x: 275, y: 195, width: 90, height: 85 },
+    externalLandRecordSource: 'UP Bhulekh (Bhu-Aadhaar)',
+    mutationStatus: 'Verified',
+    latitude: 25.2760,
+    longitude: 83.1380,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [83.1360, 25.2745],
+          [83.1405, 25.2750],
+          [83.1400, 25.2778],
+          [83.1355, 25.2772],
+          [83.1360, 25.2745]
+        ]
+      ]
+    },
+    awardStatus: 'Payment Initiated',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Entitlement Approved'
+  },
+  {
+    id: 'PAR-CHA-2003',
+    surveyNumber: '290/2',
+    projectId: 'PRJ-2025-0102',
+    state: 'Uttar Pradesh',
+    district: 'Chandauli',
+    tehsil: 'Mughal Sarai',
+    village: 'Alinagar',
+    areaAcres: 5.10,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Brijesh Kumar Yadav',
+    ownerReferenceMasked: 'B. K. Y***av (***8841)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 3100000,
+    coordinates: { x: 380, y: 200, width: 90, height: 80 },
+    externalLandRecordSource: 'UP Bhulekh (Bhu-Aadhaar)',
+    mutationStatus: 'Verified',
+    latitude: 25.2650,
+    longitude: 83.1650,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [83.1630, 25.2635],
+          [83.1675, 25.2640],
+          [83.1670, 25.2670],
+          [83.1625, 25.2665],
+          [83.1630, 25.2635]
+        ]
+      ]
+    },
+    awardStatus: 'Paid',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Resettled'
+  },
+  {
+    id: 'PAR-BAG-3001',
+    surveyNumber: '92/1A',
+    projectId: 'PRJ-2025-0103',
+    state: 'Karnataka',
+    district: 'Bagalkote',
+    tehsil: 'Jamkhandi',
+    village: 'Terdal',
+    areaAcres: 12.50,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Basavaraj Channappa Patil',
+    ownerReferenceMasked: 'B. C. P***l (***4389)',
+    ownershipType: 'Private Individual',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 1800000,
+    coordinates: { x: 110, y: 310, width: 130, height: 100 },
+    externalLandRecordSource: 'Bhoomi Karnataka (Bhoomi RTC)',
+    mutationStatus: 'Verified',
+    latitude: 16.5120,
+    longitude: 75.3180,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [75.3150, 16.5100],
+          [75.3215, 16.5110],
+          [75.3205, 16.5145],
+          [75.3140, 16.5135],
+          [75.3150, 16.5100]
+        ]
+      ]
+    },
+    awardStatus: 'Paid',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Resettled'
+  },
+  {
+    id: 'PAR-BAG-3002',
+    surveyNumber: '95/2',
+    projectId: 'PRJ-2025-0103',
+    state: 'Karnataka',
+    district: 'Bagalkote',
+    tehsil: 'Jamkhandi',
+    village: 'Terdal',
+    areaAcres: 5.20,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Mallikarjun G. Hiremath',
+    ownerReferenceMasked: 'M. G. H***math (***1123)',
+    ownershipType: 'Private Individual',
+    status: 'Excluded',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 1500000,
+    coordinates: { x: 255, y: 315, width: 80, height: 90 },
+    externalLandRecordSource: 'Bhoomi Karnataka (Bhoomi RTC)',
+    mutationStatus: 'Verified',
+    latitude: 16.5050,
+    longitude: 75.3350,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [75.3330, 16.5035],
+          [75.3375, 16.5042],
+          [75.3370, 16.5070],
+          [75.3325, 16.5062],
+          [75.3330, 16.5035]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Exempted',
+    rrStatus: 'Not Required'
+  },
+  {
+    id: 'PAR-BAG-3003',
+    surveyNumber: '98/1C',
+    projectId: 'PRJ-2025-0103',
+    state: 'Karnataka',
+    district: 'Bagalkote',
+    tehsil: 'Jamkhandi',
+    village: 'Terdal',
+    areaAcres: 4.80,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Shivanand S. Pujari',
+    ownerReferenceMasked: 'S. S. P***ari (***7190)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 1750000,
+    coordinates: { x: 350, y: 320, width: 90, height: 80 },
+    externalLandRecordSource: 'Bhoomi Karnataka (Bhoomi RTC)',
+    mutationStatus: 'Verified',
+    latitude: 16.5250,
+    longitude: 75.2900,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [75.2880, 16.5235],
+          [75.2925, 16.5240],
+          [75.2920, 16.5268],
+          [75.2875, 16.5262],
+          [75.2880, 16.5235]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-JOD-4001',
+    surveyNumber: '412/Govt',
+    projectId: 'PRJ-2025-0104',
+    state: 'Rajasthan',
+    district: 'Jodhpur',
+    tehsil: 'Phalodi',
+    village: 'Bhadla Khurd',
+    areaAcres: 45.00,
+    landType: 'Government / Wasteland',
+    ownerName: 'Revenue Department, Govt of Rajasthan',
+    ownerReferenceMasked: 'Govt Land (Inter-Dept Transfer)',
+    ownershipType: 'State Government',
+    status: 'Acquired',
+    compensationStatus: 'Disbursed',
+    possessionStatus: 'Possession Taken',
+    marketValuePerAcre: 650000,
+    coordinates: { x: 420, y: 210, width: 160, height: 120 },
+    externalLandRecordSource: 'Apna Khata / E-Dharti Rajasthan',
+    mutationStatus: 'Verified',
+    latitude: 27.5380,
+    longitude: 71.9250,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [71.9210, 27.5350],
+          [71.9300, 27.5360],
+          [71.9290, 27.5420],
+          [71.9200, 27.5410],
+          [71.9210, 27.5350]
+        ]
+      ]
+    },
+    awardStatus: 'Paid',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Not Required'
+  },
+  {
+    id: 'PAR-JOD-4002',
+    surveyNumber: '416/2',
+    projectId: 'PRJ-2025-0104',
+    state: 'Rajasthan',
+    district: 'Jodhpur',
+    tehsil: 'Phalodi',
+    village: 'Bhadla Khurd',
+    areaAcres: 18.20,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Khemraj Bhati & Sons',
+    ownerReferenceMasked: 'K. B***ti (***4011)',
+    ownershipType: 'Joint / Coparcenary',
+    status: 'Notified',
+    compensationStatus: 'Award Declared',
+    possessionStatus: 'Notice Issued',
+    marketValuePerAcre: 720000,
+    coordinates: { x: 520, y: 220, width: 110, height: 90 },
+    externalLandRecordSource: 'Apna Khata / E-Dharti Rajasthan',
+    mutationStatus: 'Verified',
+    latitude: 27.5450,
+    longitude: 71.9420,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [71.9390, 27.5430],
+          [71.9460, 27.5440],
+          [71.9450, 27.5480],
+          [71.9380, 27.5470],
+          [71.9390, 27.5430]
+        ]
+      ]
+    },
+    awardStatus: 'Award Declared',
+    notificationStatus: 'Section 19 Declared',
+    rrStatus: 'Entitlement Approved'
+  },
+  {
+    id: 'PAR-PUN-5001',
+    surveyNumber: '318/2',
+    projectId: 'PRJ-2025-0105',
+    state: 'Maharashtra',
+    district: 'Pune',
+    tehsil: 'Haveli',
+    village: 'Khadakwasla',
+    areaAcres: 3.15,
+    landType: 'Agricultural (Irrigated)',
+    ownerName: 'Gajanan Dnyaneshwar Pawar',
+    ownerReferenceMasked: 'G. D. P***r (***7721)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 7500000,
+    coordinates: { x: 380, y: 340, width: 90, height: 95 },
+    externalLandRecordSource: 'MahaBhulekh (7/12 Extract)',
+    mutationStatus: 'Verified',
+    latitude: 18.4420,
+    longitude: 73.7680,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [73.7660, 18.4405],
+          [73.7705, 18.4410],
+          [73.7700, 18.4438],
+          [73.7655, 18.4432],
+          [73.7660, 18.4405]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-PUN-5002',
+    surveyNumber: '320/1',
+    projectId: 'PRJ-2025-0105',
+    state: 'Maharashtra',
+    district: 'Pune',
+    tehsil: 'Haveli',
+    village: 'Khadakwasla',
+    areaAcres: 1.80,
+    landType: 'Residential / Abadi',
+    ownerName: 'Sunita Ashok Deshmukh',
+    ownerReferenceMasked: 'S. A. D***mukh (***6501)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 9200000,
+    coordinates: { x: 485, y: 345, width: 75, height: 75 },
+    externalLandRecordSource: 'MahaBhulekh (7/12 Extract)',
+    mutationStatus: 'Verified',
+    latitude: 18.4360,
+    longitude: 73.7790,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [73.7775, 18.4350],
+          [73.7810, 18.4355],
+          [73.7805, 18.4378],
+          [73.7770, 18.4372],
+          [73.7775, 18.4350]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-PUN-5003',
+    surveyNumber: '325/3',
+    projectId: 'PRJ-2025-0105',
+    state: 'Maharashtra',
+    district: 'Pune',
+    tehsil: 'Haveli',
+    village: 'Khadakwasla',
+    areaAcres: 2.90,
+    landType: 'Non-Agricultural / Commercial',
+    ownerName: 'Vikas Shankarrao Jadhav',
+    ownerReferenceMasked: 'V. S. J***hav (***3109)',
+    ownershipType: 'Private Individual',
+    status: 'Disputed',
+    compensationStatus: 'Disputed / In Escrow',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 8800000,
+    coordinates: { x: 550, y: 350, width: 80, height: 80 },
+    externalLandRecordSource: 'MahaBhulekh (7/12 Extract)',
+    mutationStatus: 'Disputed',
+    latitude: 18.4550,
+    longitude: 73.7520,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [73.7500, 18.4535],
+          [73.7545, 18.4540],
+          [73.7540, 18.4570],
+          [73.7495, 18.4565],
+          [73.7500, 18.4535]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  },
+  {
+    id: 'PAR-GUJ-6001',
+    surveyNumber: '108/A',
+    projectId: 'PRJ-2025-0106',
+    state: 'Gujarat',
+    district: 'Ahmedabad',
+    tehsil: 'Dholera',
+    village: 'Dholera',
+    areaAcres: 6.40,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Hasmukhbhai K. Patel',
+    ownerReferenceMasked: 'H. K. P***l (***9022)',
+    ownershipType: 'Private Individual',
+    status: 'Proposed',
+    compensationStatus: 'Not Assessed',
+    possessionStatus: 'Pending',
+    marketValuePerAcre: 2100000,
+    coordinates: { x: 200, y: 250, width: 85, height: 85 },
+    externalLandRecordSource: 'AnyRoR Gujarat (7/12 & 8A)',
+    mutationStatus: 'Verified',
+    latitude: 22.2580,
+    longitude: 72.1920,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [72.1900, 22.2565],
+          [72.1945, 22.2570],
+          [72.1940, 22.2600],
+          [72.1895, 22.2595],
+          [72.1900, 22.2565]
+        ]
+      ]
+    },
+    awardStatus: 'Pending',
+    notificationStatus: 'Pending Notification',
+    rrStatus: 'Not Required'
+  },
+  {
+    id: 'PAR-GUJ-6002',
+    surveyNumber: '112/B',
+    projectId: 'PRJ-2025-0106',
+    state: 'Gujarat',
+    district: 'Ahmedabad',
+    tehsil: 'Dholera',
+    village: 'Dholera',
+    areaAcres: 4.10,
+    landType: 'Agricultural (Dry)',
+    ownerName: 'Manilal D. Vaghela',
+    ownerReferenceMasked: 'M. D. V***hela (***3310)',
+    ownershipType: 'Private Individual',
+    status: 'Notified',
+    compensationStatus: 'Award Declared',
+    possessionStatus: 'Notice Issued',
+    marketValuePerAcre: 2250000,
+    coordinates: { x: 300, y: 260, width: 90, height: 80 },
+    externalLandRecordSource: 'AnyRoR Gujarat (7/12 & 8A)',
+    mutationStatus: 'Verified',
+    latitude: 22.2480,
+    longitude: 72.2050,
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [72.2030, 22.2465],
+          [72.2075, 22.2470],
+          [72.2070, 22.2500],
+          [72.2025, 22.2495],
+          [72.2030, 22.2465]
+        ]
+      ]
+    },
+    awardStatus: 'Award Declared',
+    notificationStatus: 'Section 11 Notified',
+    rrStatus: 'Survey Pending'
+  }
+];
+
+export const INITIAL_AWARDS: Award[] = [
+  {
+    id: 'AWD-2024-TN-081',
+    awardNumber: 'LARR/AWD/2024/0081',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1001',
+    landownerName: 'M. S. Venkataraman & Brothers',
+    landAreaAcres: 4.85,
+    marketValueBase: 11640000,
+    multiplierFactor: 1.25,
+    solatium100Percent: 14550000,
+    additionalInterest12Percent: 1746000,
+    assetValuation: 620000,
+    totalAwardAmount: 31466000,
+    awardDate: '2024-11-28',
+    status: 'Paid',
+    declarationAuthority: 'Special District Revenue Officer (LA), Krishnagiri'
+  },
+  {
+    id: 'AWD-2024-TN-082',
+    awardNumber: 'LARR/AWD/2024/0082',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1002',
+    landownerName: 'K. Rajasekaran',
+    landAreaAcres: 2.30,
+    marketValueBase: 8740000,
+    multiplierFactor: 1.10,
+    solatium100Percent: 9614000,
+    additionalInterest12Percent: 1153680,
+    assetValuation: 1450000,
+    totalAwardAmount: 20957680,
+    awardDate: '2024-11-28',
+    status: 'Paid',
+    declarationAuthority: 'Special District Revenue Officer (LA), Krishnagiri'
+  },
+  {
+    id: 'AWD-2024-TN-095',
+    awardNumber: 'LARR/AWD/2024/0095',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1003',
+    landownerName: 'P. Muniswamy Gounder',
+    landAreaAcres: 6.10,
+    marketValueBase: 17080000,
+    multiplierFactor: 1.25,
+    solatium100Percent: 21350000,
+    additionalInterest12Percent: 2562000,
+    assetValuation: 840000,
+    totalAwardAmount: 46102000,
+    awardDate: '2025-01-14',
+    status: 'Declared',
+    declarationAuthority: 'Special District Revenue Officer (LA), Krishnagiri'
+  },
+  {
+    id: 'AWD-2025-UP-014',
+    awardNumber: 'LARR/AWD/2025/0014',
+    projectId: 'PRJ-2025-0102',
+    parcelId: 'PAR-CHA-2002',
+    landownerName: 'Shanti Devi & Legal Heirs',
+    landAreaAcres: 3.75,
+    marketValueBase: 9750000,
+    multiplierFactor: 1.50,
+    solatium100Percent: 14625000,
+    additionalInterest12Percent: 1755000,
+    assetValuation: 380000,
+    totalAwardAmount: 26510000,
+    awardDate: '2025-02-05',
+    status: 'Payment Initiated',
+    declarationAuthority: 'Additional District Magistrate (LA), Chandauli'
+  }
+];
+
+export const INITIAL_COMPENSATIONS: CompensationPayment[] = [
+  {
+    id: 'CMP-2024-0091',
+    awardId: 'AWD-2024-TN-081',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1001',
+    beneficiaryName: 'M. S. Venkataraman',
+    beneficiaryMasked: 'M. S. V****raman',
+    bankAccountMasked: 'SBIN000****9281',
+    ifscMasked: 'SBIN0004112',
+    amount: 31466000,
+    pfmsReferenceId: 'PFMS-2024-TN-894102',
+    paymentStatus: 'Paid',
+    dueDate: '2024-12-15',
+    paymentDate: '2024-12-18',
+    remarks: 'Electronic payment successfully settled into verified Aadhaar-seeded bank account.'
+  },
+  {
+    id: 'CMP-2024-0092',
+    awardId: 'AWD-2024-TN-082',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1002',
+    beneficiaryName: 'K. Rajasekaran',
+    beneficiaryMasked: 'K. R***sekaran',
+    bankAccountMasked: 'IOBA000****1842',
+    ifscMasked: 'IOBA0001094',
+    amount: 20957680,
+    pfmsReferenceId: 'PFMS-2024-TN-894109',
+    paymentStatus: 'Paid',
+    dueDate: '2024-12-15',
+    paymentDate: '2024-12-20',
+    remarks: 'Settled via RTGS / PFMS Treasury Gateway.'
+  },
+  {
+    id: 'CMP-2025-0018',
+    awardId: 'AWD-2025-UP-014',
+    projectId: 'PRJ-2025-0102',
+    parcelId: 'PAR-CHA-2002',
+    beneficiaryName: 'Shanti Devi',
+    beneficiaryMasked: 'S***ti D***',
+    bankAccountMasked: 'PUNB000****7419',
+    ifscMasked: 'PUNB0240100',
+    amount: 26510000,
+    pfmsReferenceId: 'PFMS-2025-UP-102941',
+    paymentStatus: 'Processing',
+    dueDate: '2025-02-25',
+    remarks: 'Awaiting digital token approval from District Treasury Officer, Chandauli.'
+  },
+  {
+    id: 'CMP-2025-0024',
+    awardId: 'AWD-2024-TN-095',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1003',
+    beneficiaryName: 'P. Muniswamy Gounder',
+    beneficiaryMasked: 'P. M***swamy',
+    bankAccountMasked: 'CANB000****4512',
+    ifscMasked: 'CNRB0001824',
+    amount: 46102000,
+    paymentStatus: 'Delayed',
+    dueDate: '2025-02-15',
+    remarks: 'Threshold crossed (>30 days since Award declaration). System delay alert triggered.'
+  }
+];
+
+export const INITIAL_POSSESSION_RECORDS: PossessionRecord[] = [
+  {
+    id: 'POS-2024-TN-001',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1001',
+    surveyNumber: '142/3A',
+    possessionDate: '2024-12-24',
+    vestingOrderNumber: 'VEST/KRI/2024/0992',
+    recordingOfficer: 'Dr. C. Saravanan, IAS',
+    officerDesignation: 'District Collector & Magistrate, Krishnagiri',
+    certificateDocumentUrl: 'https://nlams.gov.in/records/possession-cert-kri-1001.pdf',
+    panchnamaUploaded: true,
+    encumbranceFreeConfirmed: true,
+    gisSynced: true,
+    timestamp: '2024-12-24T14:35:10Z'
+  },
+  {
+    id: 'POS-2024-TN-002',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1002',
+    surveyNumber: '144/1B',
+    possessionDate: '2024-12-28',
+    vestingOrderNumber: 'VEST/KRI/2024/0998',
+    recordingOfficer: 'Dr. C. Saravanan, IAS',
+    officerDesignation: 'District Collector & Magistrate, Krishnagiri',
+    certificateDocumentUrl: 'https://nlams.gov.in/records/possession-cert-kri-1002.pdf',
+    panchnamaUploaded: true,
+    encumbranceFreeConfirmed: true,
+    gisSynced: true,
+    timestamp: '2024-12-28T11:20:44Z'
+  },
+  {
+    id: 'POS-2024-KA-001',
+    projectId: 'PRJ-2025-0103',
+    parcelId: 'PAR-BAG-3001',
+    surveyNumber: '92/1A',
+    possessionDate: '2024-09-18',
+    vestingOrderNumber: 'VEST/BAG/2024/0411',
+    recordingOfficer: 'K. M. Janaki, IAS',
+    officerDesignation: 'District Collector & Magistrate, Bagalkote',
+    certificateDocumentUrl: 'https://nlams.gov.in/records/possession-cert-bag-3001.pdf',
+    panchnamaUploaded: true,
+    encumbranceFreeConfirmed: true,
+    gisSynced: true,
+    timestamp: '2024-09-18T16:15:00Z'
+  }
+];
+
+export const INITIAL_FAMILIES: AffectedFamily[] = [
+  {
+    id: 'FAM-KRI-0034',
+    projectId: 'PRJ-2025-0101',
+    village: 'Kamandoddi',
+    parcelId: 'PAR-KRI-1003',
+    headOfFamily: 'P. Muniswamy Gounder',
+    familyMembersCount: 5,
+    category: 'OBC',
+    entitlements: {
+      housingUnitOrCash: 'Constructed House',
+      oneTimeGrant: 50000,
+      annuityOrLumpSum: 'Lump-sum ₹5,00,000',
+      resettlementSiteName: 'Shoolagiri R&R Modern Township Colony'
+    },
+    workflowStatus: 'Benefit Delivered',
+    housingStatus: 'Possession Given',
+    livelihoodStatus: 'Grant Credited',
+    resettlementStatus: 'Settled',
+    grievanceStatus: 'None'
+  },
+  {
+    id: 'FAM-CHA-0008',
+    projectId: 'PRJ-2025-0102',
+    village: 'Alinagar',
+    parcelId: 'PAR-CHA-2001',
+    headOfFamily: 'Rameshwar Nath Tripathi',
+    familyMembersCount: 7,
+    category: 'General',
+    entitlements: {
+      housingUnitOrCash: 'Cash Assistance ₹1.5L',
+      oneTimeGrant: 50000,
+      annuityOrLumpSum: '₹2,000/month for 20 yrs'
+    },
+    workflowStatus: 'Benefit Approved',
+    housingStatus: 'Allotted',
+    livelihoodStatus: 'Pending',
+    resettlementStatus: 'Pending',
+    grievanceStatus: 'Active Grievance'
+  },
+  {
+    id: 'FAM-PUN-0012',
+    projectId: 'PRJ-2025-0105',
+    village: 'Khadakwasla',
+    parcelId: 'PAR-PUN-5001',
+    headOfFamily: 'Gajanan Dnyaneshwar Pawar',
+    familyMembersCount: 4,
+    category: 'Small/Marginal Farmer',
+    entitlements: {
+      housingUnitOrCash: 'Constructed House',
+      oneTimeGrant: 50000,
+      annuityOrLumpSum: 'Mandatory Job Offer',
+      resettlementSiteName: 'Haveli Green Habitat Layout'
+    },
+    workflowStatus: 'Registered',
+    housingStatus: 'Pending',
+    livelihoodStatus: 'Pending',
+    resettlementStatus: 'Pending',
+    grievanceStatus: 'Active Grievance'
+  },
+  {
+    id: 'FAM-BAG-0044',
+    projectId: 'PRJ-2025-0103',
+    village: 'Terdal',
+    parcelId: 'PAR-BAG-3001',
+    headOfFamily: 'Basavaraj Channappa Patil',
+    familyMembersCount: 6,
+    category: 'Small/Marginal Farmer',
+    entitlements: {
+      housingUnitOrCash: 'Constructed House',
+      oneTimeGrant: 50000,
+      annuityOrLumpSum: 'Lump-sum ₹5,00,000',
+      resettlementSiteName: 'Krishna Valley Rehabilitation Sector 4'
+    },
+    workflowStatus: 'Resettled',
+    housingStatus: 'Possession Given',
+    livelihoodStatus: 'Job Appointed',
+    resettlementStatus: 'Settled',
+    grievanceStatus: 'None'
+  }
+];
+
+export const INITIAL_GRIEVANCES: Grievance[] = [
+  {
+    id: 'GRV-001',
+    referenceNumber: 'NLAMS-GRV-2026-00124',
+    projectId: 'PRJ-2025-0101',
+    parcelId: 'PAR-KRI-1003',
+    complainantName: 'P. Muniswamy Gounder',
+    complainantContactMasked: '+91 98****1022',
+    category: 'Delayed Payment',
+    description: 'Award was declared on 14-Jan-2025 but electronic PFMS treasury credit has not reached bank account after 35 days.',
+    submissionDate: '2025-02-18',
+    status: 'Action Required',
+    assignedAuthority: 'District Revenue Officer (LA), Krishnagiri',
+    officialResolutionNotes: 'Treasury bill re-submitted with revised IFSC validation; payment queue prioritized.'
+  },
+  {
+    id: 'GRV-002',
+    referenceNumber: 'NLAMS-GRV-2026-00125',
+    projectId: 'PRJ-2025-0102',
+    parcelId: 'PAR-CHA-2001',
+    complainantName: 'Rameshwar Nath Tripathi',
+    complainantContactMasked: '+91 94****4890',
+    category: 'Possession Dispute',
+    description: 'Railway survey crew marked alignment boundary through tube-well shed without formal demarcation notice or compensation clearance.',
+    submissionDate: '2025-02-22',
+    status: 'Under Review',
+    assignedAuthority: 'Competent Authority / SDO Mughal Sarai',
+    officialResolutionNotes: 'Order issued to station survey team to halt physical boundary fencing until joint re-survey.'
+  },
+  {
+    id: 'GRV-003',
+    referenceNumber: 'NLAMS-GRV-2026-00118',
+    projectId: 'PRJ-2025-0105',
+    parcelId: 'PAR-PUN-5001',
+    complainantName: 'Gajanan Dnyaneshwar Pawar',
+    complainantContactMasked: '+91 97****6614',
+    category: 'Compensation Discrepancy',
+    description: 'Circle rate index used for Khadakwasla is dated 2022 instead of the updated 2024 Stamp Duty Ready Reckoner rates.',
+    submissionDate: '2025-02-10',
+    status: 'Submitted',
+    assignedAuthority: 'Deputy Collector (Land Acquisition - Metro), Pune'
+  }
+];
+
+export const INITIAL_AUDIT_LOGS: AuditLog[] = [
+  {
+    id: 'AUD-901',
+    eventId: 'EVT-NLAMS-20250228-001',
+    timestamp: '2024-12-28T11:20:44.000Z',
+    date: '2024-12-28',
+    time: '11:20:44',
+    userId: 'USR-DC-KRI-01',
+    userName: 'Dr. C. Saravanan, IAS',
+    user: 'Dr. C. Saravanan, IAS',
+    userRole: 'District Collector',
+    role: 'District Collector',
+    action: 'Possession Recorded & Vesting Order Issued',
+    module: 'Possession',
+    entityType: 'Possession Record',
+    entityId: 'PAR-KRI-1002',
+    recordId: 'PAR-KRI-1002',
+    projectId: 'PRJ-2025-0101',
+    description: 'Vesting certificate VEST/KRI/2024/0998 digitally signed. Land possession transferred to NHAI under Sec 38.',
+    details: 'Vesting certificate VEST/KRI/2024/0998 digitally signed. GIS parcel status synced to green.',
+    previousStatus: 'Notified',
+    newStatus: 'Acquired',
+    oldValue: { status: 'Notified', possessionStatus: 'Pending' },
+    newValue: { status: 'Acquired', possessionStatus: 'Vested', vestingOrderNo: 'VEST/KRI/2024/0998' },
+    ipSession: '10.24.88.19 (NICGovNet)',
+    ipAddress: '10.24.88.19 (NICGovNet)',
+    status: 'SUCCESS',
+    hash: 'SHA256:7f83b1657ff1fc53b92dc18148a1d65dfc2d4b1fa3d677284addd200126d9069',
+    createdAt: '2024-12-28T11:20:44.000Z'
+  },
+  {
+    id: 'AUD-902',
+    eventId: 'EVT-NLAMS-20250215-084',
+    timestamp: '2025-01-14T16:04:12.000Z',
+    date: '2025-01-14',
+    time: '16:04:12',
+    userId: 'USR-SDRO-09',
+    userName: 'S. Anandaraj, SDRO',
+    user: 'S. Anandaraj, SDRO',
+    userRole: 'District Collector',
+    role: 'District Collector',
+    action: 'Section 23/30 Award Declared',
+    module: 'Awards',
+    entityType: 'Award',
+    entityId: 'AWD-2024-TN-095',
+    recordId: 'AWD-2024-TN-095',
+    projectId: 'PRJ-2025-0101',
+    description: 'Award amount ₹4,61,02,000 declared with 100% Solatium and 12% additional interest under First Schedule.',
+    details: 'Award amount ₹4,61,02,000 declared with 100% Solatium and 12% additional interest.',
+    previousStatus: 'Draft',
+    newStatus: 'Declared',
+    oldValue: { status: 'Draft', totalAwardAmount: 46102000 },
+    newValue: { status: 'Declared', totalAwardAmount: 46102000, declarationAuthority: 'S. Anandaraj, SDRO' },
+    ipSession: '10.24.88.42 (NICGovNet)',
+    ipAddress: '10.24.88.42 (NICGovNet)',
+    status: 'SUCCESS',
+    hash: 'SHA256:2c26b46b68ffc68ff99b453c1d30413413422d706483bfa0f98a5e886266e7ae',
+    createdAt: '2025-01-14T16:04:12.000Z'
+  },
+  {
+    id: 'AUD-903',
+    eventId: 'EVT-NLAMS-20250120-019',
+    timestamp: '2025-01-20T10:15:30.000Z',
+    date: '2025-01-20',
+    time: '10:15:30',
+    userId: 'USR-DFCCIL-DIR',
+    userName: 'Rajiv Mehra, Director (Infra)',
+    user: 'Rajiv Mehra, Director (Infra)',
+    userRole: 'Land Requiring Body',
+    role: 'Land Requiring Body',
+    action: 'Alignment Map V2 Uploaded',
+    module: 'Projects',
+    entityType: 'Project',
+    entityId: 'PRJ-2025-0102',
+    recordId: 'PRJ-2025-0102',
+    projectId: 'PRJ-2025-0102',
+    description: 'Uploaded updated geo-referenced KMZ alignment map avoiding sacred grove in Chandauli.',
+    details: 'Uploaded updated geo-referenced KMZ alignment map avoiding sacred grove in Chandauli.',
+    previousStatus: 'Scrutiny',
+    newStatus: 'Approved',
+    oldValue: { alignmentVersion: 'v1.0', scrutinyStatus: 'Clarification Requested' },
+    newValue: { alignmentVersion: 'v2.0', scrutinyStatus: 'Approved' },
+    ipSession: '14.139.60.22 (DFCCIL-HQ)',
+    ipAddress: '14.139.60.22 (DFCCIL-HQ)',
+    status: 'SUCCESS',
+    hash: 'SHA256:fc48886337da42e0f07b3270ba3f53979f431e133d83484b7280e2d36904fed9',
+    createdAt: '2025-01-20T10:15:30.000Z'
+  },
+  {
+    id: 'AUD-904',
+    eventId: 'EVT-NLAMS-20250105-003',
+    timestamp: '2024-07-15T09:00:00.000Z',
+    date: '2024-07-15',
+    time: '09:00:00',
+    userId: 'USR-MOL-JS01',
+    userName: 'Pooja Bhatt, Joint Secretary',
+    user: 'Pooja Bhatt, Joint Secretary',
+    userRole: 'National Administrator',
+    role: 'National Administrator',
+    action: 'Statutory Section 11 Notification Published',
+    module: 'Notifications',
+    entityType: 'Notification',
+    entityId: 'SEC11/UP/CHA/2024/112',
+    recordId: 'SEC11/UP/CHA/2024/112',
+    projectId: 'PRJ-2025-0102',
+    description: 'Published in Official Gazette of UP (Extraordinary Part IV). Cadastral survey schedule notified.',
+    details: 'Published in Official Gazette of UP (Extraordinary Part IV). Cadastral survey schedule notified.',
+    previousStatus: 'Approved',
+    newStatus: 'Published',
+    oldValue: { status: 'Draft', gazetteNumber: 'None' },
+    newValue: { status: 'Published', gazetteNumber: 'SEC11/UP/CHA/2024/112' },
+    ipSession: '10.110.12.5 (e-Gazette DoLR)',
+    ipAddress: '10.110.12.5 (e-Gazette DoLR)',
+    status: 'SUCCESS',
+    hash: 'SHA256:4ca3517b40ac77f6a75079368964ff5f3ec24c0e6027130207606a70161dbd19',
+    createdAt: '2024-07-15T09:00:00.000Z'
+  },
+  {
+    id: 'AUD-905',
+    eventId: 'EVT-NLAMS-20250125-012',
+    timestamp: '2025-01-25T14:30:00.000Z',
+    date: '2025-01-25',
+    time: '14:30:00',
+    userId: 'USR-RR-TN-03',
+    userName: 'K. Meenakshi, Sub-Collector',
+    user: 'K. Meenakshi, Sub-Collector',
+    userRole: 'R&R Officer',
+    role: 'R&R Officer',
+    action: 'R&R Entitlement Package Approved',
+    module: 'R&R',
+    entityType: 'Affected Family',
+    entityId: 'FAM-KRI-0034',
+    recordId: 'FAM-KRI-0034',
+    projectId: 'PRJ-2025-0101',
+    description: 'Constructed housing unit at Shoolagiri Colony and ₹50,000 shifting allowance sanctioned for Muniswamy Gounder.',
+    details: 'Constructed housing unit at Shoolagiri Colony and ₹50,000 shifting allowance sanctioned for Muniswamy Gounder.',
+    previousStatus: 'Eligibility Verified',
+    newStatus: 'Benefits Approved',
+    oldValue: { workflowStatus: 'Eligibility Verified', housingStatus: 'Pending' },
+    newValue: { workflowStatus: 'Benefit Approved', housingStatus: 'Allotted' },
+    ipSession: '10.24.88.22 (NICGovNet)',
+    ipAddress: '10.24.88.22 (NICGovNet)',
+    status: 'SUCCESS',
+    hash: 'SHA256:8f434346648f6b96df89dda901c5176b10a6d83961dd3c1ac88b59b2dc327aa4',
+    createdAt: '2025-01-25T14:30:00.000Z'
+  },
+  {
+    id: 'AUD-906',
+    eventId: 'EVT-NLAMS-20250218-044',
+    timestamp: '2025-02-18T16:12:00.000Z',
+    date: '2025-02-18',
+    time: '16:12:00',
+    userId: 'USR-PFMS-OPERATOR',
+    userName: 'CGA Treasury Gateway',
+    user: 'CGA Treasury Gateway',
+    userRole: 'National Administrator',
+    role: 'National Administrator',
+    action: 'Compensation Disbursed (PFMS)',
+    module: 'Compensation',
+    entityType: 'Compensation Payment',
+    entityId: 'CMP-2025-001',
+    recordId: 'CMP-2025-001',
+    projectId: 'PRJ-2025-0101',
+    description: '₹4,61,02,000 successfully disbursed to P. Muniswamy Gounder (SBI A/C ending 4402) via PFMS UTR SBIN2504991201.',
+    details: '₹4,61,02,000 successfully disbursed to P. Muniswamy Gounder via PFMS.',
+    previousStatus: 'Processing',
+    newStatus: 'Paid',
+    oldValue: { paymentStatus: 'Processing', pfmsReferenceId: 'PFMS-REQ-9901' },
+    newValue: { paymentStatus: 'Paid', utrNumber: 'SBIN2504991201', disbursedDate: '2025-02-18' },
+    ipSession: '164.100.12.8 (PFMS-Secured)',
+    ipAddress: '164.100.12.8 (PFMS-Secured)',
+    status: 'SUCCESS',
+    hash: 'SHA256:d8b2e31e5f039a89c9e89b4f911a3d13da1823ef0b777a98a003f00f074d0e65',
+    createdAt: '2025-02-18T16:12:00.000Z'
+  }
+];
+
+export const INITIAL_ALERTS: RuleAlert[] = [
+  {
+    id: 'ALT-01',
+    severity: 'Critical',
+    title: 'Compensation Disbursement Pending Threshold Exceeded',
+    description: 'Award AWD-2024-TN-095 (Parcel PAR-KRI-1003, ₹4.61 Cr) has remained unpaid >30 days past statutory timeline.',
+    module: 'Compensation',
+    projectId: 'PRJ-2025-0101',
+    createdAt: '2025-02-16',
+    status: 'Active',
+    actionLabel: 'Disburse via PFMS',
+    actionRoute: 'Compensation'
+  },
+  {
+    id: 'ALT-02',
+    severity: 'High',
+    title: 'Section 11 Preliminary Notification Published',
+    description: 'Section 11 Notification for Pune Outer Ring Road (PRJ-2025-0105) published. Cadastral survey and award inquiry scheduled.',
+    module: 'Notifications',
+    projectId: 'PRJ-2025-0105',
+    createdAt: '2025-09-02',
+    status: 'Active',
+    actionLabel: 'View Gazette Notice',
+    actionRoute: 'Notifications'
+  },
+  {
+    id: 'ALT-03',
+    severity: 'High',
+    title: 'Arbitration Alert: Disputed Parcel P-2001',
+    description: 'Rail Corridor Parcel PAR-CHA-2001 has active title dispute; compensation held in Escrow per Sec 77 RFCTLARR.',
+    module: 'Land Parcels',
+    projectId: 'PRJ-2025-0102',
+    createdAt: '2025-02-20',
+    status: 'Active',
+    actionLabel: 'Inspect Parcel',
+    actionRoute: 'Land Parcels'
+  },
+  {
+    id: 'ALT-04',
+    severity: 'Medium',
+    title: 'Missing Document Warning: Alignment Stamp Pending',
+    description: 'Project PRJ-2025-0106 (Dholera SIR Spur) requires authorized town-planner alignment digital signature.',
+    module: 'Scrutiny',
+    projectId: 'PRJ-2025-0106',
+    createdAt: '2025-02-25',
+    status: 'Active',
+    actionLabel: 'Scrutinize Proposal',
+    actionRoute: 'Projects'
+  }
+];
+
+export const DEMO_EXTERNAL_APIS: LandRecordExternalAPI[] = [
+  {
+    sourceName: 'Tamil Nilam (Tamil Nadu)',
+    stateCode: 'TN',
+    portalUrl: 'https://eservices.tn.gov.in/eservicesnew/land/chitta.html',
+    status: 'Connected (Demo Sandbox)',
+    lastSyncTime: '2025-02-28 04:30 IST',
+    recordsVerifiedCount: 4210
+  },
+  {
+    sourceName: 'UP Bhulekh / Bhu-Aadhaar (Uttar Pradesh)',
+    stateCode: 'UP',
+    portalUrl: 'https://upbhulekh.gov.in',
+    status: 'Connected (Demo Sandbox)',
+    lastSyncTime: '2025-02-28 05:00 IST',
+    recordsVerifiedCount: 8920
+  },
+  {
+    sourceName: 'Bhoomi RTC (Karnataka)',
+    stateCode: 'KA',
+    portalUrl: 'https://landrecords.karnataka.gov.in',
+    status: 'Connected (Demo Sandbox)',
+    lastSyncTime: '2025-02-27 22:15 IST',
+    recordsVerifiedCount: 6540
+  },
+  {
+    sourceName: 'Apna Khata / E-Dharti (Rajasthan)',
+    stateCode: 'RJ',
+    portalUrl: 'https://apnakhata.rajasthan.gov.in',
+    status: 'Connected (Demo Sandbox)',
+    lastSyncTime: '2025-02-28 01:10 IST',
+    recordsVerifiedCount: 3100
+  },
+  {
+    sourceName: 'MahaBhulekh (Maharashtra)',
+    stateCode: 'MH',
+    portalUrl: 'https://bhulekh.mahabhumi.gov.in',
+    status: 'Connected (Demo Sandbox)',
+    lastSyncTime: '2025-02-28 03:45 IST',
+    recordsVerifiedCount: 5410
+  }
+];

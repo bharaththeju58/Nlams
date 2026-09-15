@@ -1,0 +1,10 @@
+{
+  "name": "Remix NLAMS — National Land Acquisition \u0026 Management System",
+  "description": "A centralized platform for intelligent land acquisition management, GIS-based monitoring, AI document analysis, and citizen transparency.",
+  "slug": "nlams-land-system-4253",
+  "urlSlug": "nlams-land-system-4253",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
